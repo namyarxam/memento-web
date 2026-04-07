@@ -64,8 +64,7 @@ Deno.serve(async (req) => {
       messages: [
         {
           role: "user",
-          content: `Summarize this captured AI conversation snippet in under 10 words. Be specific and descriptive — mention the actual topic, not generic phrases. No quotes, no punctuation at the end.\n\n${text.slice(0, 2000)}`,
-        },
+          content: `Summarize this captured AI conversation snippet in one single line under 57 characters. Be specific — mention the actual topic. No quotes, no punctuation at the end. No line breaks.\n\n${text.slice(0, 2000)}`,        },
       ],
     }),
   })
