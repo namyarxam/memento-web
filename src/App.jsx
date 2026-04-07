@@ -1,47 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { supabase } from './supabase'
+import Header from './components/Header'
+import Landing from './components/Landing'
+import Dashboard from './components/Dashboard'
 import './App.css'
 
-export default function App() {
+function AppRoutes() {
   const [session, setSession] = useState(null)
-  const [captures, setCaptures] = useState([])
   const [loading, setLoading] = useState(true)
-  const [pendingDeleteId, setPendingDeleteId] = useState(null)
+  const navigate = useNavigate()
+  const initialized = useRef(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      setLoading(false)
+      if (!session && window.location.pathname === '/dashboard') navigate('/', { replace: true })
+      initialized.current = true
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session)
+      if (!initialized.current) return
+      if (event === 'SIGNED_IN') navigate('/dashboard')
+      else if (event === 'SIGNED_OUT') navigate('/')
     })
 
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => {
-    if (!session) {
-      setCaptures([])
-      setLoading(false)
-      return
-    }
-
-    setLoading(true)
-    supabase
-      .from('captures')
-      .select('id, text, url, created_at')
-      .order('created_at', { ascending: false })
-      .then(({ data, error }) => {
-        if (!error) setCaptures(data ?? [])
-        setLoading(false)
-      })
-  }, [session])
-
-  async function signInWithGoogle() {
+  async function signIn() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: window.location.origin + '/dashboard' },
     })
   }
 
@@ -49,75 +41,27 @@ export default function App() {
     await supabase.auth.signOut()
   }
 
-  async function confirmDelete() {
-    const id = pendingDeleteId
-    setPendingDeleteId(null)
-    const { error } = await supabase.from('captures').delete().eq('id', id)
-    if (error) {
-      console.error('Delete failed:', error)
-    } else {
-      setCaptures((prev) => prev.filter((c) => c.id !== id))
-    }
-  }
-
-  if (!session) {
-    return (
-      <div className="centered">
-        <h1>Capture Brick</h1>
-        <p>Sign in to view your captured snippets.</p>
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
-      </div>
-    )
-  }
+  if (loading) return null
 
   return (
-    <div className="container">
-      <header>
-        <h1>Capture Brick</h1>
-        <div className="user-row">
-          <span>{session.user.email}</span>
-          <button onClick={signOut}>Sign out</button>
-        </div>
-      </header>
+    <>
+      <Header session={session} onSignIn={signIn} onSignOut={signOut} />
+      <Routes>
+        <Route path="/" element={
+          session ? <Navigate to="/dashboard" replace /> : <Landing onSignIn={signIn} />
+        } />
+        <Route path="/dashboard" element={
+          session ? <Dashboard session={session} /> : <Navigate to="/" replace />
+        } />
+      </Routes>
+    </>
+  )
+}
 
-      <main>
-        {loading ? (
-          <p>Loading…</p>
-        ) : captures.length === 0 ? (
-          <p>No captures yet. Use the extension to save snippets.</p>
-        ) : (
-          <ul className="capture-list">
-            {captures.map((c) => (
-              <li key={c.id} className="capture-item">
-                <p className="capture-text">{c.text}</p>
-                <a href={c.url} target="_blank" rel="noreferrer" className="capture-url">
-                  {c.url}
-                </a>
-                <div className="capture-footer">
-                  <time className="capture-time">
-                    {new Date(c.created_at).toLocaleString()}
-                  </time>
-                  <button className="delete-btn" onClick={() => setPendingDeleteId(c.id)}>
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </main>
-
-      {pendingDeleteId && (
-        <div className="modal-overlay" onClick={() => setPendingDeleteId(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <p>Delete this snippet?</p>
-            <div className="modal-actions">
-              <button onClick={() => setPendingDeleteId(null)}>Cancel</button>
-              <button className="delete-btn" onClick={confirmDelete}>Delete</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
