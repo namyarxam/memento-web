@@ -1,16 +1,76 @@
-# React + Vite
+# Memento
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Web dashboard for the Memento Chrome extension. Capture the best things AI tells you — from Claude, ChatGPT, Gemini, and more — and organize them in one place.
 
-Currently, two official plugins are available:
+## What it does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The Memento Chrome extension lets you select and save text snippets ("mementos") from AI conversations. This dashboard is where you view, organize, and revisit them.
 
-## React Compiler
+- **Capture** — Select text blocks from any AI chat with a click or drag
+- **Organize** — Create color-coded boxes to sort mementos by project, topic, or however you think
+- **Revisit** — Browse compact cards with AI-generated summaries, expand to see full content, and jump back to the original conversation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the ESLint configuration
+| Layer | Tech |
+|-------|------|
+| Frontend | Vite + React 19 |
+| Backend / DB | Supabase (Postgres, Auth, Row-Level Security) |
+| AI Summaries | Claude Haiku via Supabase Edge Functions |
+| Styling | Plain CSS with CSS variables, DM Sans font |
+| Deploy | Vercel |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting started
+
+```bash
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Add your VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+
+# Start dev server
+npm run dev
+```
+
+## Environment variables
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_SUPABASE_URL` | Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anonymous/public key |
+
+For production, set these in your Vercel project settings.
+
+## Features
+
+- **Google OAuth** sign-in via Supabase Auth
+- **Landing page** with product overview and how-it-works walkthrough
+- **Dashboard** with compact memento cards showing tagline, source icon, and timestamp
+- **Expandable cards** with full captured content, role-labeled as PROMPT / RESPONSE
+- **Memento boxes** — color-coded categories for organizing captures
+- **AI auto-summarize** — generate taglines with Claude Haiku in one click
+- **Inline editing** — edit taglines directly on the card
+- **Jump to source** — link back to the original AI conversation
+- **Delete with confirmation** — no accidental deletions
+
+## Project structure
+
+```
+src/
+  App.jsx              Root component, auth state, routing
+  App.css              All component styles
+  index.css            Theme variables, reset, font
+  supabase.js          Supabase client init
+  main.jsx             React entry point
+  components/
+    Header.jsx         Sticky header with logo, nav, auth
+    Landing.jsx        Landing page
+    Dashboard.jsx      Dashboard with memento list and boxes
+supabase/
+  functions/
+    generate-tagline/  Edge function for AI-powered tagline generation
+migrations/
+  001_boxes_and_taglines.sql
+```
