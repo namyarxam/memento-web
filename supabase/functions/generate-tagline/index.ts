@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 30,
+      max_tokens: 60,
       messages: [
         {
           role: "user",
@@ -107,8 +107,23 @@ Deno.serve(async (req) => {
     }),
   })
 
+  if (!response.ok) {
+    console.error("Anthropic API error:", response.status, await response.text())
+    return new Response(JSON.stringify({ error: "Tagline generation failed" }), {
+      status: 502,
+      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
+    })
+  }
+
   const result = await response.json()
   const tagline = result.content?.[0]?.text?.trim() ?? ""
+
+  if (!tagline) {
+    return new Response(JSON.stringify({ error: "Tagline generation failed" }), {
+      status: 502,
+      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
+    })
+  }
 
   if (tagline) {
     await supabase.from("captures").update({ tagline }).eq("id", captureId)

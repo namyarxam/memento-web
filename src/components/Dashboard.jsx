@@ -186,10 +186,14 @@ export default function Dashboard({ session }) {
       if (!error && data?.tagline) {
         setCaptures(prev => prev.map(c => c.id === captureId ? { ...c, tagline: data.tagline, _generating: false } : c))
       } else {
-        setCaptures(prev => prev.map(c => c.id === captureId ? { ...c, _generating: false } : c))
+        setCaptures(prev => prev.map(c => c.id === captureId ? { ...c, _generating: false, _genError: true } : c))
+        setEditingTagline(captureId)
+        setEditingTaglineVal('')
       }
     } catch {
-      setCaptures(prev => prev.map(c => c.id === captureId ? { ...c, _generating: false } : c))
+      setCaptures(prev => prev.map(c => c.id === captureId ? { ...c, _generating: false, _genError: true } : c))
+      setEditingTagline(captureId)
+      setEditingTaglineVal('')
     }
   }
 
@@ -426,11 +430,17 @@ export default function Dashboard({ session }) {
                       </span>
                       <div className="memento-footer-actions">
                         {!c.tagline && (
-                          <button className="btn btn-sm btn-ghost"
-                            disabled={c._generating}
-                            onClick={e => { e.stopPropagation(); generateTagline(c.id) }}>
-                            {c._generating ? 'Generating...' : '✨ Auto-generate tagline'}
-                          </button>
+                          c._genError ? (
+                            <span style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)' }}>
+                              Generation failed — type a tagline above
+                            </span>
+                          ) : (
+                            <button className="btn btn-sm btn-ghost"
+                              disabled={c._generating}
+                              onClick={e => { e.stopPropagation(); generateTagline(c.id) }}>
+                              {c._generating ? 'Generating...' : '✨ Auto-generate tagline'}
+                            </button>
+                          )
                         )}
                         {jumpHref && (
                           <a href={jumpHref} target="_blank" rel="noreferrer"
