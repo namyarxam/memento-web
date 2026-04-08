@@ -762,12 +762,14 @@
   border-left-color: var(--stone-300);
 }
 
+
 .memento-block-text {
   font-size: 0.875rem;
   line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-word;
 }
+
 
 .memento-block-role {
   font-size: 0.6875rem;

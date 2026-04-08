@@ -277,7 +277,7 @@ export default function Dashboard({ session }) {
         ))}
 
         <button className="box-chip box-chip-add" onClick={() => setShowCreateBox(true)}>
-          + New box
+          +
         </button>
       </div>
 
@@ -401,14 +401,23 @@ export default function Dashboard({ session }) {
                 {isExpanded && (
                   <>
                     <div className="memento-body">
-                      {blocks.map((block, i) => (
+                      {(() => {
+                        const filtered = blocks.filter(b => b.text?.trim())
+                        const roles = new Set(filtered.map(b => b.role).filter(r => r && r !== 'unknown'))
+                        const isSingleRole = roles.size <= 1
+                        return filtered.map((block, i) => {
+                          const prevRole = i > 0 ? filtered[i - 1].role : null
+                          const showLabel = !isSingleRole && block.role && block.role !== 'unknown' && block.role !== prevRole
+                          return (
                         <div key={i} className={`memento-block memento-block-${block.role || 'unknown'}`}>
-                          {block.role && block.role !== 'unknown' && (
+                          {showLabel && (
                             <div className="memento-block-role">{block.role === 'user' ? 'PROMPT' : block.role === 'assistant' ? 'RESPONSE' : block.role}</div>
                           )}
                           <div className="memento-block-text">{block.text}</div>
                         </div>
-                      ))}
+                          )
+                        })
+                      })()}
                     </div>
 
                     <div className="memento-footer">
