@@ -4,6 +4,7 @@ import { supabase } from './supabase'
 import Header from './components/Header'
 import Landing from './components/Landing'
 import Dashboard from './components/Dashboard'
+import Privacy from './components/Privacy'
 import './App.css'
 
 function AppRoutes() {
@@ -53,6 +54,7 @@ function AppRoutes() {
         <Route path="/dashboard" element={
           session ? <Dashboard session={session} /> : <Navigate to="/" replace />
         } />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </>
   )
