@@ -62,7 +62,7 @@ export default function Dashboard({ session }) {
   const [boxes, setBoxes] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeView, setActiveView] = useState('all') // 'all' or a box id
-  const [expandedId, setExpandedId] = useState(null)
+  const [expandedIds, setExpandedIds] = useState(new Set())
   const [editingTaglineId, setEditingTaglineId] = useState(null)
   const [editingTaglineVal, setEditingTaglineVal] = useState('')
   const [pendingDeleteId, setPendingDeleteId] = useState(null)
@@ -132,7 +132,7 @@ export default function Dashboard({ session }) {
     const { error } = await supabase.from('captures').delete().eq('id', id)
     if (!error) {
       setCaptures(prev => prev.filter(c => c.id !== id))
-      if (expandedId === id) setExpandedId(null)
+      setExpandedIds(prev => { const next = new Set(prev); next.delete(id); return next })
     }
   }
 
@@ -295,7 +295,7 @@ export default function Dashboard({ session }) {
           </div>
         ) : (
           visibleCaptures.map(c => {
-            const isExpanded = expandedId === c.id
+            const isExpanded = expandedIds.has(c.id)
             const isEditing = editingTaglineId === c.id
             const box = getBoxForCapture(c)
             const blocks = c.blocks || [{ text: c.text, role: 'unknown' }]
@@ -307,7 +307,12 @@ export default function Dashboard({ session }) {
               <div key={c.id} className="memento-card">
                 {/* Compact header row */}
                 <div className="memento-card-header" onClick={() => {
-                  if (!isEditing) setExpandedId(isExpanded ? null : c.id)
+                  if (!isEditing) setExpandedIds(prev => {
+                    const next = new Set(prev)
+                    if (next.has(c.id)) next.delete(c.id)
+                    else next.add(c.id)
+                    return next
+                  })
                 }}>
                   <div className="box-picker-wrapper" ref={boxPickerId === c.id ? boxPickerRef : null} onClick={e => e.stopPropagation()}>
                     <button
