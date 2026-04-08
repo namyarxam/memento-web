@@ -1,24 +1,33 @@
 :root {
   --font: 'DM Sans', system-ui, -apple-system, sans-serif;
 
-  /* Charcoal / dark (from extension button) */
-  --charcoal: #292524;
-  --charcoal-light: #44403c;
+  /* Teal palette (from logo SVG, ordered dark → light) */
+  --teal-900: #105465;   /* darkest */
+  --teal-800: #0f7588;   /* most used in logo — primary dark */
+  --teal-700: #108292;
+  --teal-600: #199eae;
+  --teal-500: #14a8b4;   /* bright accent */
+  --teal-400: #49a1ad;
+  --teal-300: #54b7c5;   /* lightest solid */
 
-  /* Stone (warm grays) */
-  --stone-700: #57534e;
-  --stone-500: #78716c;
-  --stone-400: #a8a29e;
-  --stone-300: #d6d3d1;
-  --stone-200: #e7e5e4;
-  --stone-100: #f5f5f4;
-  --stone-50: #fafaf9;
+  /* Charcoal (derived from darkest logo teal) */
+  --charcoal: #105465;
+  --charcoal-light: #0f7588;
 
-  /* Green accent (from extension bookmark icon) */
-  --green: #4aba6a;
-  --green-dark: #3a9956;
-  --green-light: #dcfce7;
-  --green-50: #f0fdf4;
+  /* Slate (cool grays to complement teals) */
+  --stone-700: #3d5a63;
+  --stone-500: #5f7a82;
+  --stone-400: #8da5ac;
+  --stone-300: #c1d3d7;
+  --stone-200: #dce8eb;
+  --stone-100: #eef4f5;
+  --stone-50: #f5f9fa;
+
+  /* Accent */
+  --accent: var(--teal-500);
+  --accent-dark: var(--teal-700);
+  --accent-light: #d5f0f3;
+  --accent-50: #edf9fa;
 
   /* Semantic */
   --bg: var(--stone-50);

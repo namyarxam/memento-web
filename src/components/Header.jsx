@@ -2,9 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 const Logo = () => (
   <div className="header-logo-icon">
-    <svg width="14" height="18" viewBox="0 0 12 15" fill="none">
-      <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h9A1.5 1.5 0 0 1 12 1.5V14l-3.5-7.5L6 14l-3.5-7.5L0 14V1.5z" fill="#4aba6a"/>
-    </svg>
+    <img src="/logo.svg" alt="Memento" />
   </div>
 )
 

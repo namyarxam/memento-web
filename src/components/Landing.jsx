@@ -5,9 +5,7 @@ export default function Landing({ session, onSignIn }) {
     <div className="landing">
       <section className="hero">
         <div className="hero-icon">
-          <svg width="28" height="36" viewBox="0 0 12 15" fill="none">
-            <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h9A1.5 1.5 0 0 1 12 1.5V14l-3.5-7.5L6 14l-3.5-7.5L0 14V1.5z" fill="#4aba6a"/>
-          </svg>
+          <img src="/logo.svg" alt="Memento" />
         </div>
 
         <h1>Recall AI insights</h1>
@@ -83,8 +81,8 @@ export default function Landing({ session, onSignIn }) {
           <div className="crossover-card">
             <h3>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect width="16" height="16" rx="3" fill="#44403c"/>
-                <path d="M4.5 3a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v9.5l-2-3.5L7.5 12.5l-2-3.5L4.5 12.5V3z" fill="#4aba6a"/>
+                <rect width="16" height="16" rx="3" fill="#105465"/>
+                <path d="M4.5 3a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v9.5l-2-3.5L7.5 12.5l-2-3.5L4.5 12.5V3z" fill="#14a8b4"/>
               </svg>
               Chrome Extension
             </h3>
@@ -96,11 +94,11 @@ export default function Landing({ session, onSignIn }) {
           <div className="crossover-card">
             <h3>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect x="0.5" y="0.5" width="15" height="15" rx="3" stroke="#e7e5e4" fill="white"/>
-                <rect x="3" y="3" width="4" height="4" rx="1" fill="#4aba6a" opacity="0.7"/>
-                <rect x="9" y="3" width="4" height="4" rx="1" fill="#3b82f6" opacity="0.7"/>
-                <rect x="3" y="9" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.7"/>
-                <rect x="9" y="9" width="4" height="4" rx="1" fill="#ec4899" opacity="0.7"/>
+                <rect x="0.5" y="0.5" width="15" height="15" rx="3" stroke="#c1d3d7" fill="white"/>
+                <rect x="3" y="3" width="4" height="4" rx="1" fill="#14a8b4" opacity="0.7"/>
+                <rect x="9" y="3" width="4" height="4" rx="1" fill="#0f7588" opacity="0.7"/>
+                <rect x="3" y="9" width="4" height="4" rx="1" fill="#54b7c5" opacity="0.7"/>
+                <rect x="9" y="9" width="4" height="4" rx="1" fill="#199eae" opacity="0.7"/>
               </svg>
               Web Dashboard
             </h3>

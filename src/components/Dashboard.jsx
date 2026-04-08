@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../supabase'
 
 const BOX_COLORS = [
-  '#ef4444', '#f97316', '#eab308', '#22c55e',
-  '#14b8a6', '#3b82f6', '#8b5cf6', '#ec4899',
+  '#14a8b4', '#0f7588', '#199eae', '#54b7c5',
+  '#105465', '#108292', '#49a1ad', '#3b82f6',
 ]
 
 function timeAgo(dateStr) {
@@ -231,7 +231,7 @@ export default function Dashboard({ session }) {
           </>
         ) : (
           <>
-            <span className="memento-box-dot" style={{ background: '#292524', width: 12, height: 12 }} />
+            <span className="memento-box-dot" style={{ background: '#0f7588', width: 12, height: 12 }} />
             <span className="box-view-name">My Mementos</span>
             <span className="box-view-count">{captures.length} memento{captures.length !== 1 ? 's' : ''}</span>
           </>
@@ -244,7 +244,7 @@ export default function Dashboard({ session }) {
           className={`box-chip${activeView === 'all' ? ' active' : ''}`}
           onClick={() => setActiveView('all')}
         >
-          <span className="box-chip-dot" style={{ background: '#292524' }} />
+          <span className="box-chip-dot" style={{ background: '#0f7588' }} />
           All
           <span className="box-chip-count">{captures.length}</span>
         </button>
