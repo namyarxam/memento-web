@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../supabase'
 
 const BOX_COLORS = [
-  '#14a8b4', '#0f7588', '#199eae', '#54b7c5',
-  '#105465', '#108292', '#49a1ad', '#3b82f6',
+  '#ef4444', '#f97316', '#eab308', '#22c55e',
+  '#14b8a6', '#3b82f6', '#8b5cf6', '#ec4899',
 ]
 
 function timeAgo(dateStr) {
