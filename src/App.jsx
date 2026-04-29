@@ -49,7 +49,7 @@ function AppRoutes() {
       <Header session={session} onSignIn={signIn} onSignOut={signOut} />
       <Routes>
         <Route path="/" element={
-          session ? <Navigate to="/dashboard" replace /> : <Landing onSignIn={signIn} />
+          session ? <Navigate to="/dashboard" replace /> : <Landing />
         } />
         <Route path="/dashboard" element={
           session ? <Dashboard session={session} /> : <Navigate to="/" replace />

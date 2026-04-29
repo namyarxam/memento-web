@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
-
-export default function Landing({ session, onSignIn }) {
+export default function Landing() {
   return (
     <div className="landing">
       <section className="hero">
@@ -24,16 +22,7 @@ export default function Landing({ session, onSignIn }) {
         </p>
 
         <div className="hero-cta">
-          {session ? (
-            <Link to="/dashboard" className="btn btn-primary">
-              Go to Dashboard
-            </Link>
-          ) : (
-            <button className="btn btn-primary" onClick={onSignIn}>
-              Get Started
-            </button>
-          )}
-          <a className="btn" href="https://chromewebstore.google.com" target="_blank" rel="noreferrer">
+          <a className="btn btn-primary" href="https://chromewebstore.google.com/detail/memento/jhjfobhkeniamjpbeebmpgpkpjcombmi" target="_blank" rel="noreferrer">
             Chrome Extension
           </a>
         </div>
